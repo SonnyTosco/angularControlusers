@@ -1,21 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html ng-app = 'usersControlla'>
   <head>
     <meta charset="utf-8">
     <title>Controlling Users</title>
     <script src="bower_components/angular/angular.js" charset="utf-8"></script>
     <script type='text/javascript'>
+      var app = angular.module('usersControlla', []);
+      app.controller('controlla', function ($scope){
+        $scope.users = [];
 
+        $scope.addUser = function(){
+          $scope.users.push($scope.newUser);
+          $scope.newUser = {};
+        }
+
+        $scope.deleteUser = function(index){
+          $scope.users.splice(index, 1);
+        }
+      })
     </script>
   </head>
   <body>
     <div ng-controller = 'controlla'>
       <form>
-        First Name: <input type = 'text' ng-model = 'newUser.firstname'>
-        Last Name:  <input type = 'text' ng-model = 'newUser.lastname'>
-        Favorite Language: <input type = 'text' ng-model = 'newUser.language'>
+        First Name: <input type = 'text' ng-model = 'newUser.firstname'><br>
+        Last Name:  <input type = 'text' ng-model = 'newUser.lastname'><br>
+        Favorite Language: <input type = 'text' ng-model = 'newUser.language'><br>
         <input type = 'submit' value = 'Create User' ng-click = 'addUser()'>
       </form>
+      <hr>
       <table>
         <tr>
           <th>First Name</th>
@@ -23,11 +36,11 @@
           <th>Favorite Language</th>
           <th>Remove</th>
         </tr>
-        <tr>
-          <td>{{ firstname }}</td>
-          <td>{{ lastname }}</td>
-          <td>{{ language }}</td>
-          <td></td>
+        <tr ng-repeat = "user in users track by $index">
+          <td>{{ user.firstname }}</td>
+          <td>{{ user.lastname }}</td>
+          <td>{{ user.language }}</td>
+          <td><button ng-click = 'deleteUser($index)'>Remove User</button></td>
         </tr>
       </table>
     </div>
